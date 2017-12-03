@@ -1,4 +1,5 @@
 package com.bouvet.springtest;
+
 import org.neo4j.driver.v1.*;
 import org.springframework.boot.*;
 import org.springframework.boot.autoconfigure.*;
@@ -27,19 +28,19 @@ public class RecipeController {
 
     @RequestMapping("/recipes")
     @ResponseBody
-    ArrayList<Map> listRecipes(){
-        return getRecipes();
+    ArrayList<Map> getRecipes() {
+        return queryRecipes();
     }
 
     public static void main(String[] args) throws Exception {
         SpringApplication.run(RecipeController.class, args);
     }
 
-    private  ArrayList<Map> getRecipes(){
-        try (Session session = getDriver().session()){
+    private ArrayList<Map> queryRecipes() {
+        try (Session session = getDriver().session()) {
             StatementResult sr = session.run("MATCH (n:Recipe) RETURN n.id as id, n.name as name LIMIT 28");
             ArrayList<Map> list = new ArrayList<Map>();
-            while (sr.hasNext()){
+            while (sr.hasNext()) {
                 Record r = sr.next();
                 list.add(r.asMap());
             }
@@ -47,7 +48,7 @@ public class RecipeController {
         }
     }
 
-    private Driver getDriver(){
+    private Driver getDriver() {
         if (driver == null) {
             driver = GraphDatabase.driver(uri, AuthTokens.basic(user, password));
         }
