@@ -12,7 +12,7 @@ import java.util.Map;
 
 @Controller
 @EnableAutoConfiguration
-public class RecipeController {
+public class RecipeController extends BaseController {
 
     private String uri = "bolt://localhost:7687";
     private String user = "neo4j";
